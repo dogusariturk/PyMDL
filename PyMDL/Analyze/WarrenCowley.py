@@ -25,6 +25,6 @@ __maintainer__ = 'Doguhan Sariturk'
 __license__ = "GPL"
 
 
-class PDF:
+class WarrenCowley:
     def __init__(self):
         super().__init__()

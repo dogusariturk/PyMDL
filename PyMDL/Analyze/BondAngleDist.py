@@ -23,3 +23,8 @@ __email__ = 'dogu.sariturk@gmail.com'
 __status__ = 'Development'
 __maintainer__ = 'Doguhan Sariturk'
 __license__ = "GPL"
+
+
+class BondAngleDistribution:
+    def __init__(self):
+        super().__init__()
