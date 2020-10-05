@@ -3,11 +3,8 @@
 PyMDL
 ===============================
 
+|build| |license| |ver|
 
-.. image:: https://img.shields.io/travis/dogusariturk/PyMDL.svg
-        :target: https://travis-ci.org/dogusariturk/PyMDL
-.. image:: https://img.shields.io/github/license/dogusariturk/PyMDL
-.. image:: https://img.shields.io/github/v/tag/dogusariturk/PyMDL
 
 PyMDL is a Python library for parsing and analyzing ab-initio and MD simulation results.
 
@@ -35,3 +32,8 @@ Analysis Methods
 - Warren-Cowley Parameter
 
 .. [1] Doğuhan Sarıtürk. (2019, December 20). HEACalculator (Version v.0.1-alpha) http://doi.org/10.5281/zenodo.3590319
+
+.. |build|  image:: https://img.shields.io/travis/dogusariturk/PyMDL.svg
+        :target: https://travis-ci.org/dogusariturk/PyMDL
+.. |license| image:: https://img.shields.io/github/license/dogusariturk/PyMDL
+.. |ver| image:: https://img.shields.io/github/v/tag/dogusariturk/PyMDL
