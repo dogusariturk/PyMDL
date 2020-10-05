@@ -1,6 +1,3 @@
-PyMDL
-=====
-
 .. toctree::
    :maxdepth: 4
 

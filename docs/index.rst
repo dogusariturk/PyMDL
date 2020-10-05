@@ -2,9 +2,18 @@
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contents
+
+   self
+   source/Usage
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API Docs
 
    source/modules
+
+
 
 Indices and tables
 ==================

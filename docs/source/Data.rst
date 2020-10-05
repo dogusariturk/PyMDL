@@ -7,7 +7,15 @@ Submodules
 Data.Elements module
 --------------------
 
-.. automodule:: PyMDL.Data.Elements
+.. automodule:: Data.Elements
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Data.Mixing module
+------------------
+
+.. automodule:: Data.Mixing
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +23,7 @@ Data.Elements module
 Module contents
 ---------------
 
-.. automodule:: PyMDL.Data
+.. automodule:: Data
    :members:
    :undoc-members:
    :show-inheritance:
