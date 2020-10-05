@@ -68,13 +68,9 @@ class HEACalculator:
     References
     ----------
     .. [1] Zhang, Y.; Zuo, T.T.; Tang, Z.; Gao, M.C.; Dahmen, K.A.; Liaw, P.K.; Lu, Z.P. Prog. Mater. Sci. 2014, 61.
-    URL: https://doi.org/10.1016/j.pmatsci.2013.10.001
-    .. [2] S. S. Fang, X. S. Xiao, L. Xia, W. H. Li, Y. D. Dong,J. Non-Cryst. Solids 2003, 321, 120.
-    URL: https://doi.org/10.1016/S0022-3093(03)00155-8
+    .. [2] S.S.Fang, X. S. Xiao, L. Xia, W. H. Li, Y. D. Dong,J. Non-Cryst. Solids 2003, 321, 120.
     .. [3] Yang, X.; Zhang, Y. Mater. Chem. Phys. 2012, 132, 233–238.
-    URL: https://doi.org/10.1016/j.matchemphys.2011.11.021
     .. [4] Guo, S.; Ng, C.; Lu, J.; Liu, C.T. J. Appl. Phys. 2011, 109, 103505.
-    URL: https://doi.org/10.1063/1.3587228
     """
 
     _GAS_CONSTANT = 8.314462618
