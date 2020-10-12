@@ -18,11 +18,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-__author__ = 'Doguhan Sariturk'
+__author__ = "Doguhan Sariturk"
 __version__ = "0.1.0"
-__email__ = 'dogu.sariturk@gmail.com'
-__status__ = 'Development'
-__maintainer__ = 'Doguhan Sariturk'
+__email__ = "dogu.sariturk@gmail.com"
+__status__ = "Development"
+__maintainer__ = "Doguhan Sariturk"
 __license__ = "GPL"
 
 

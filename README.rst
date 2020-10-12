@@ -3,7 +3,7 @@
 PyMDL
 ===============================
 
-|build| |license| |ver|
+|build| |license| |ver| |Documentation Status|
 
 
 PyMDL is a Python library for parsing and analyzing ab-initio and MD simulation results.
@@ -37,3 +37,5 @@ Analysis Methods
         :target: https://travis-ci.org/dogusariturk/PyMDL
 .. |license| image:: https://img.shields.io/github/license/dogusariturk/PyMDL
 .. |ver| image:: https://img.shields.io/github/v/tag/dogusariturk/PyMDL
+.. |Documentation Status| image:: https://readthedocs.org/projects/ansicolortags/badge/?version=latest
+   :target: http://pymdl.readthedocs.io/?badge=latest

@@ -18,11 +18,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-__author__ = 'Doguhan Sariturk'
+__author__ = "Doguhan Sariturk"
 __version__ = "0.1.0"
-__email__ = 'dogu.sariturk@gmail.com'
-__status__ = 'Development'
-__maintainer__ = 'Doguhan Sariturk'
+__email__ = "dogu.sariturk@gmail.com"
+__status__ = "Development"
+__maintainer__ = "Doguhan Sariturk"
 __license__ = "GPL"
 
 
@@ -84,6 +84,24 @@ class XDATCAR:
     """A class for a VASP XDATCAR file.
 
     Contains ionic configuration for each output step of molecular dynamics simulations.
+
+    Parameters
+    ----------
+    filename : str
+        The location of the XDATCAR file.
+    """
+    def __init__(self, filename):
+        super().__init__()
+        self._filename = filename
+
+    def parse(self):
+        pass
+
+
+class CONTCAR:
+    """A class for a VASP CONTCAR file.
+
+    Is the updated POSCAR file after each calculation, whether ionic movement was performed or not.
 
     Parameters
     ----------

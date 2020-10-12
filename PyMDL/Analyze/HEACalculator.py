@@ -78,7 +78,12 @@ class HEACalculator:
     def __init__(self, formula):
         self.formula = formula
         self._alloy = nested_formula_parser(self.formula)
-        self._atomic_percentage = [num / sum(self._alloy.values()) for num in self._alloy.values()]
+        self._atomic_percentage = [num / sum(self._alloy.values())
+                                   for num
+                                   in self._alloy.values()]
+
+        self.mixing_enthalpy = self.density = self.VEC = self.melting_temperature = self.delta = None
+        self.mixing_entropy = self.omega = self.isSolidSolution = self.microstructure = None
 
     def calculate(self):
         """This method calculates phenomenological parameters based on thermodynamics and physics
@@ -91,23 +96,37 @@ class HEACalculator:
         """
         try:
             pair_list = list(itertools.combinations(self._alloy, 2))
-            pair_enthalpy = [Mixing(pair) for pair in pair_list]
-            percentage = [(self._alloy[each[0]] / sum(self._alloy.values())) * (self._alloy[each[1]] / sum(self._alloy.values())) for each in pair_list]
-            self.mixing_enthalpy = 4 * sum([percent * enthalpy for percent, enthalpy in zip(percentage, pair_enthalpy)])
+            pair_enthalpy = [Mixing(pair)
+                             for pair in pair_list]
+            percentage = [(self._alloy[each[0]] / sum(self._alloy.values()))
+                          * (self._alloy[each[1]] / sum(self._alloy.values()))
+                          for each in pair_list]
+            self.mixing_enthalpy = 4 * sum([percent * enthalpy
+                                            for percent, enthalpy in zip(percentage, pair_enthalpy)])
 
-            total_weight = sum(Element(elm).atomic_weight * af for elm, af in self._alloy.items())
-            total_volume = sum(Element(elm).atomic_volume * af for elm, af in self._alloy.items())
+            total_weight = sum(Element(elm).atomic_weight * af
+                               for elm, af in self._alloy.items())
+            total_volume = sum(Element(elm).atomic_volume * af
+                               for elm, af in self._alloy.items())
             self.density = total_weight / total_volume
 
-            nvalence_list = [Element(elm).nvalence for elm in self._alloy.keys()]
-            self.VEC = sum([percentage * valence for percentage, valence in zip(self._atomic_percentage, nvalence_list)])
+            nvalence_list = [Element(elm).nvalence
+                             for elm in self._alloy.keys()]
+            self.VEC = sum([percentage * valence
+                            for percentage, valence in zip(self._atomic_percentage, nvalence_list)])
 
-            melting_temperature_list = [Element(elm).melting_point for elm in self._alloy.keys()]
-            self.melting_temperature = math.ceil(sum([percentage * melting_temp for percentage, melting_temp in zip(self._atomic_percentage, melting_temperature_list)]))
+            melting_temperature_list = [Element(elm).melting_point
+                                        for elm in self._alloy.keys()]
+            self.melting_temperature = math.ceil(sum([percentage * melting_temp
+                                                      for percentage, melting_temp
+                                                      in zip(self._atomic_percentage, melting_temperature_list)]))
 
-            atomic_radius_list = [Element(elm).atomic_radius for elm in self._alloy.keys()]
-            average_atomic_radius = sum([percentage * radius for percentage, radius in zip(self._atomic_percentage, atomic_radius_list)])
-            _delta = sum([percentage * (1 - (radius / average_atomic_radius)) ** 2 for percentage, radius in zip(self._atomic_percentage, atomic_radius_list)])
+            atomic_radius_list = [Element(elm).atomic_radius
+                                  for elm in self._alloy.keys()]
+            average_atomic_radius = sum([percentage * radius
+                                         for percentage, radius in zip(self._atomic_percentage, atomic_radius_list)])
+            _delta = sum([percentage * (1 - (radius / average_atomic_radius)) ** 2
+                          for percentage, radius in zip(self._atomic_percentage, atomic_radius_list)])
             self.delta = math.sqrt(_delta) * 100
 
             self.mixing_entropy = -1 * self._GAS_CONSTANT * sum(self._atomic_percentage * np.log(self._atomic_percentage))
@@ -130,15 +149,15 @@ class HEACalculator:
 
     def __repr__(self):
         try:
-            return f'\n{self.formula}\n\n'\
-               f'\tDensity: \t\t{self.density:.2f} g/cm^3\n'\
-               f'\tDelta: \t\t\t{self.delta:.2f}\n'\
-               f'\tMixing Enthalpy: \t{self.mixing_enthalpy:.2f} kJ/mol\n'\
-               f'\tVEC: \t\t\t{self.VEC}\n'\
-               f'\tMixing Entropy: \t{self.mixing_entropy:.2f} J/K.mol\n'\
-               f'\tMelting Temperature: \t{self.melting_temperature} K\n'\
-               f'\tOmega: \t\t\t{self.omega:.2f}\n'\
-               f'\tCrystal Structure: \t{self.microstructure}\n'\
-               f'\tIs Solid Solution: \t{self.isSolidSolution}\n'
+            return f"\n{self.formula}\n\n"\
+               f"\tDensity: \t\t{self.density:.2f} g/cm^3\n"\
+               f"\tDelta: \t\t\t{self.delta:.2f}\n"\
+               f"\tMixing Enthalpy: \t{self.mixing_enthalpy:.2f} kJ/mol\n"\
+               f"\tVEC: \t\t\t{self.VEC}\n"\
+               f"\tMixing Entropy: \t{self.mixing_entropy:.2f} J/K.mol\n"\
+               f"\tMelting Temperature: \t{self.melting_temperature} K\n"\
+               f"\tOmega: \t\t\t{self.omega:.2f}\n"\
+               f"\tCrystal Structure: \t{self.microstructure}\n"\
+               f"\tIs Solid Solution: \t{self.isSolidSolution}\n"
         except AttributeError:
             return "AttributeError: Call calculate() method first."

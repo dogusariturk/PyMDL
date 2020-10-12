@@ -20,11 +20,11 @@
 import numpy as np
 import pandas as pd
 
-__author__ = 'Doguhan Sariturk'
+__author__ = "Doguhan Sariturk"
 __version__ = "0.1.0"
-__email__ = 'dogu.sariturk@gmail.com'
-__status__ = 'Development'
-__maintainer__ = 'Doguhan Sariturk'
+__email__ = "dogu.sariturk@gmail.com"
+__status__ = "Development"
+__maintainer__ = "Doguhan Sariturk"
 __license__ = "GPL"
 
 
@@ -43,10 +43,10 @@ class SnapshotDump:
     timestep: int(s)
         The timesteps at which the snapshots created.
 
-    box: numpy.ndarray(s), [[xlo, xhi],[ylo, yhi], [zlo, zhi]]
+    box: np.ndarray(s), [[xlo, xhi],[ylo, yhi], [zlo, zhi]]
         Simulation box boundaries.
 
-    data: numpy.ndarray(s), [[id, x, y, z], ]
+    data: np.ndarray(s), [[id, x, y, z], ]
         IDs and coordinates of all atoms in the system.
     """
 
@@ -80,10 +80,10 @@ class Dump:
     timestep: int(s)
         The timesteps at which the snapshots created.
 
-    box: numpy.ndarray(s), [[xlo, xhi, ylo, yhi, zlo, zhi], ]
+    box: np.ndarray(s), [[xlo, xhi, ylo, yhi, zlo, zhi], ]
         Simulation box boundaries.
 
-    data: numpy.ndarray(s), [[id, x, y, z], ]
+    data: np.ndarray(s), [[id, x, y, z], ]
         IDs and coordinates of all atoms in the system.
 
     Returns
@@ -93,6 +93,7 @@ class Dump:
 
     def __init__(self, filename):
         # TODO : Implement element names.
+        # TODO : Implement number_density calculation
         # TODO : combine _get_natoms() and _get_nsnapshot() into _parse_header()
         self._filename = filename
 
@@ -114,7 +115,7 @@ class Dump:
             If 'filename' does not exist.
         """
         try:
-            with open(self._filename, 'rt') as f:
+            with open(self._filename, "rt") as f:
                 f.readline()  # 'ITEM: TIMESTEP\n'
                 f.readline()
                 f.readline()  # 'ITEM: NUMBER OF ATOMS\n'
@@ -135,9 +136,9 @@ class Dump:
             If 'filename' does not exist.
         """
         try:
-            with open(self._filename, 'rt') as f:
+            with open(self._filename, "rt") as f:
                 d = f.read()
-                self.nsnapshot = d.count('ITEM: TIMESTEP\n')
+                self.nsnapshot = d.count("ITEM: TIMESTEP\n")
         except FileNotFoundError as e:
             print(f"FileNotFoundError: \n \t {e.strerror}: '{e.filename}'")
 
@@ -154,7 +155,7 @@ class Dump:
             If 'filename' does not exist.
         """
         try:
-            with open(self._filename, 'rt') as f:
+            with open(self._filename, "rt") as f:
                 f.readline()  # 'ITEM: TIMESTEP\n'
                 timestep = int(f.readline())
                 f.readline()  # 'ITEM: NUMBER OF ATOMS\n'
@@ -191,25 +192,25 @@ class Dump:
             If 'filename' does not exist.
         """
         try:
-            with open(self._filename, 'rt') as f:
+            with open(self._filename, "rt") as f:
 
-                self._timestep = np.array([], dtype='int')
+                self._timestep = np.array([], dtype="int")
                 __box = list()
                 __data = list()
 
                 for line in f:
-                    if line.startswith('ITEM: TIMESTEP'):
+                    if line.startswith("ITEM: TIMESTEP"):
                         __timestep = int(next(f).split()[0])
                         self._timestep = np.append(self._timestep, __timestep)
 
-                    if line.startswith('ITEM: BOX'):
+                    if line.startswith("ITEM: BOX"):
                         xlo, xhi = [float(s) for s in next(f).split()]
                         ylo, yhi = [float(s) for s in next(f).split()]
                         zlo, zhi = [float(s) for s in next(f).split()]
 
                         __box.append([xlo, xhi, ylo, yhi, zlo, zhi])
 
-                    if line.startswith('ITEM: ATOMS'):
+                    if line.startswith("ITEM: ATOMS"):
                         __data_snapshot = list()
                         for _ in range(int(self.natoms)):
                             item = list(next(f).split())
@@ -217,9 +218,9 @@ class Dump:
                         __data.append(__data_snapshot)
 
                 self.box = np.array(__box)
-                self.data = np.array(__data, dtype='float64')
+                self.data = np.array(__data, dtype="float64")
 
-            _string = ' '.join(map(str, self._timestep))
+            _string = " ".join(map(str, self._timestep))
             print(f"Success:\n\tParsed {self.nsnapshot} snapshots, at timesteps {_string}.")
             print("\tNow, use get_snapshot() method to get a SnapshotDump object at that timestep.")
 
@@ -264,7 +265,7 @@ class SnapshotLog:
     nrun: int
         Simulation run time.
 
-    data: numpy.ndarray(s), [[id, x, y, z], ]
+    data: np.ndarray(s), [[id, x, y, z], ]
         IDs and coordinates of all atoms in the system.
 
     Returns
@@ -313,78 +314,14 @@ class Log:
             If 'filename' does not exist.
         """
         try:
-            with open(self._filename, 'rt') as f:
+            with open(self._filename, "rt") as f:
                 for line in f:
-                    if line.startswith('#'):
+                    if line.startswith("#"):
                         continue
-                    if line.startswith('run'):
+                    if line.startswith("run"):
                         self._nrun.append(line.split()[1])
         except FileNotFoundError as e:
             print(f"FileNotFoundError: \n \t {e.strerror}: '{e.filename}'")
-
-
-class SnapshotRDF:
-    """Class for representing a single LAMMPS RDF as a snapshot.
-
-
-    Parameters
-    ----------
-    rdf : Pandas.DataFrame
-        TODO
-    n_column : int
-        TODO
-
-    Returns
-    -------
-    None
-    """
-
-    def __init__(self, rdf, n_column):
-        self.rdf = rdf
-        self.n_column = n_column
-
-    def plot(self):
-        """" TODO
-
-        Returns
-        -------
-        None
-
-        """
-        import matplotlib as mpl
-        import matplotlib.pyplot as plt
-
-        plt.style.use('grayscale')
-
-        plt_params = {
-                "text.usetex": True,
-                "font.family": "serif",
-                "axes.labelsize": 10,
-                "font.size": 10,
-                "axes.linewidth": 1,
-                "legend.fontsize": 8,
-                "xtick.labelsize": 8,
-                "ytick.labelsize": 8,
-        }
-        mpl.rcParams.update(plt_params)
-
-        fig, ax = plt.subplots(1, 1, figsize=(6, 4))
-        if self.n_column == 4:
-            ax.plot(self.rdf['r'], self.rdf['gr'])
-        elif self.n_column == 10:
-            ax.plot(self.rdf['r'], self.rdf['gr_1'], label='gr-1')
-            ax.plot(self.rdf['r'], self.rdf['gr_2'], label='gr-2')
-            ax.plot(self.rdf['r'], self.rdf['gr_3'], label='gr-3')
-            ax.plot(self.rdf['r'], self.rdf['gr_4'], label='gr-4')
-
-        plt.xlabel("r(Å)", labelpad=10)
-        plt.ylabel("g(r)", labelpad=10)
-
-        plt.legend()
-
-        plt.show()
-
-        return ax
 
 
 class RDF:
@@ -414,6 +351,8 @@ class RDF:
     def __init__(self, filename):
         self._filename = filename
 
+        self.rdf = self.r = self.gr = None
+
         self._parse_header()
 
     def _parse_header(self):
@@ -429,7 +368,7 @@ class RDF:
             If 'filename' does not exist.
         """
         try:
-            self._file = pd.read_csv(self._filename, skiprows=[0, 1], sep=' ')
+            self._file = pd.read_csv(self._filename, skiprows=[0, 1], sep=" ")
 
             self.n_column = int(len(self._file.axes[1]) - 1)
             self.n_bin = int(self._file.iloc[0][1])
@@ -453,27 +392,27 @@ class RDF:
         """
         from scipy.interpolate import make_interp_spline
         new_rdf = pd.DataFrame()
-        r_new = np.linspace(rdf['r'].min(), rdf['r'].max(), 500)
+        r_new = np.linspace(rdf["r"].min(), rdf["r"].max(), 500)
         if self.n_column == 4:
-            spl = make_interp_spline(rdf['r'], rdf['gr'], k=3)
+            spl = make_interp_spline(rdf["r"], rdf["gr"], k=3)
             gr_smooth = spl(r_new)
-            new_rdf['r'] = r_new
-            new_rdf['gr'] = gr_smooth
+            new_rdf["r"] = r_new
+            new_rdf["gr"] = gr_smooth
         elif self.n_column == 10:
-            spl_1 = make_interp_spline(rdf['r'], rdf['gr_1'], k=3)
-            spl_2 = make_interp_spline(rdf['r'], rdf['gr_2'], k=3)
-            spl_3 = make_interp_spline(rdf['r'], rdf['gr_3'], k=3)
-            spl_4 = make_interp_spline(rdf['r'], rdf['gr_4'], k=3)
+            spl_1 = make_interp_spline(rdf["r"], rdf["gr_1"], k=3)
+            spl_2 = make_interp_spline(rdf["r"], rdf["gr_2"], k=3)
+            spl_3 = make_interp_spline(rdf["r"], rdf["gr_3"], k=3)
+            spl_4 = make_interp_spline(rdf["r"], rdf["gr_4"], k=3)
             gr_1_smooth = spl_1(r_new)
             gr_2_smooth = spl_2(r_new)
             gr_3_smooth = spl_3(r_new)
             gr_4_smooth = spl_4(r_new)
             new_rdf = pd.DataFrame()
-            new_rdf['r'] = r_new
-            new_rdf['gr_1'] = gr_1_smooth
-            new_rdf['gr_2'] = gr_2_smooth
-            new_rdf['gr_3'] = gr_3_smooth
-            new_rdf['gr_4'] = gr_4_smooth
+            new_rdf["r"] = r_new
+            new_rdf["gr_1"] = gr_1_smooth
+            new_rdf["gr_2"] = gr_2_smooth
+            new_rdf["gr_3"] = gr_3_smooth
+            new_rdf["gr_4"] = gr_4_smooth
 
         return new_rdf
 
@@ -482,7 +421,7 @@ class RDF:
 
         Parameters
         ----------
-        required_snapshot : pandas.DataFrame
+        required_snapshot : int
             TODO
 
         smooth : bool
@@ -496,7 +435,7 @@ class RDF:
         # TODO : check if required_snapshot >= 0
         start = required_snapshot
         stop = (required_snapshot + 1)
-        return self.average_snapshots(start=start, stop=stop, smooth=smooth)
+        self.average_snapshots(start=start, stop=stop, smooth=smooth)
 
     def average_snapshots(self, start=0, stop=1, step=1, smooth=False):
         """TODO
@@ -528,36 +467,86 @@ class RDF:
         for i in range(start, stop, step):
             df = self._file.iloc[(self.n_bin * i) + i + 1: (self.n_bin * i) + i + (self.n_bin + 1), :]
             if i == start:
-                rdf['r'] = df.iloc[:, 1].values
+                rdf["r"] = df.iloc[:, 1].values
                 if self.n_column == 4:
-                    rdf['gr'] = df.iloc[:, 2].values
+                    rdf["gr"] = df.iloc[:, 2].values
                 elif self.n_column == 10:
-                    rdf['gr_1'] = df.iloc[:, 2].values
-                    rdf['gr_2'] = df.iloc[:, 4].values
-                    rdf['gr_3'] = df.iloc[:, 6].values
-                    rdf['gr_4'] = df.iloc[:, 8].values
+                    rdf["gr_1"] = df.iloc[:, 2].values
+                    rdf["gr_2"] = df.iloc[:, 4].values
+                    rdf["gr_3"] = df.iloc[:, 6].values
+                    rdf["gr_4"] = df.iloc[:, 8].values
             else:
                 if self.n_column == 4:
-                    rdf['gr'] = rdf['gr'] + df.iloc[:, 2].values
+                    rdf["gr"] = rdf["gr"] + df.iloc[:, 2].values
                 elif self.n_column == 10:
-                    rdf['gr_1'] = rdf['gr_1'] + df.iloc[:, 2].values
-                    rdf['gr_2'] = rdf['gr_2'] + df.iloc[:, 4].values
-                    rdf['gr_3'] = rdf['gr_3'] + df.iloc[:, 6].values
-                    rdf['gr_4'] = rdf['gr_4'] + df.iloc[:, 8].values
+                    rdf["gr_1"] = rdf["gr_1"] + df.iloc[:, 2].values
+                    rdf["gr_2"] = rdf["gr_2"] + df.iloc[:, 4].values
+                    rdf["gr_3"] = rdf["gr_3"] + df.iloc[:, 6].values
+                    rdf["gr_4"] = rdf["gr_4"] + df.iloc[:, 8].values
 
         if self.n_column == 4:
-            rdf['gr'] = rdf['gr'] / ((stop - start) / step)
+            rdf["gr"] = rdf["gr"] / ((stop - start) / step)
         elif self.n_column == 10:
-            rdf['gr_1'] = rdf['gr_1'] / ((stop - start) / step)
-            rdf['gr_2'] = rdf['gr_2'] / ((stop - start) / step)
-            rdf['gr_3'] = rdf['gr_3'] / ((stop - start) / step)
-            rdf['gr_4'] = rdf['gr_4'] / ((stop - start) / step)
+            rdf["gr_1"] = rdf["gr_1"] / ((stop - start) / step)
+            rdf["gr_2"] = rdf["gr_2"] / ((stop - start) / step)
+            rdf["gr_3"] = rdf["gr_3"] / ((stop - start) / step)
+            rdf["gr_4"] = rdf["gr_4"] / ((stop - start) / step)
 
         if not smooth:
-            return SnapshotRDF(rdf, self.n_column)
+            self.rdf = rdf
+            self.r = rdf.loc[:, 'r']
+            self.gr = rdf.loc[:, rdf.columns.isin(['gr', 'gr_1', 'gr_2', 'gr_3', 'gr_4'])]
         elif smooth:
             new_rdf = self._smooth_rdf(rdf)
-            return SnapshotRDF(new_rdf, self.n_column)
+            self.rdf = new_rdf
+            self.r = rdf.loc[:, 'r']
+            self.gr = rdf.loc[:, rdf.columns.isin(['gr', 'gr_1', 'gr_2', 'gr_3', 'gr_4'])]
+
+    def plot(self, ax=None):
+        """" TODO
+
+        Returns
+        -------
+        None
+
+        """
+        import matplotlib as mpl
+        import matplotlib.pyplot as plt
+
+        plt.style.use("grayscale")
+
+        plt_params = {
+                "text.usetex": True,
+                "font.family": "serif",
+                "axes.labelsize": 10,
+                "font.size": 10,
+                "axes.linewidth": 1,
+                "legend.fontsize": 8,
+                "xtick.labelsize": 8,
+                "ytick.labelsize": 8,
+        }
+        mpl.rcParams.update(plt_params)
+
+        if not ax:
+            fig, ax = plt.subplots(1, 1, figsize=(6, 4))
+
+        if self.n_column == 4:
+            ax.plot(self.r, self.gr['gr'])
+        elif self.n_column == 10:
+            ax.plot(self.r, self.gr["gr_1"], label="gr-1")
+            ax.plot(self.r, self.gr["gr_2"], label="gr-2")
+            ax.plot(self.r, self.gr["gr_3"], label="gr-3")
+            ax.plot(self.r, self.gr["gr_4"], label="gr-4")
+
+            plt.legend()
+
+        ax.set_xlabel("r(Å)", labelpad=10)
+        ax.set_ylabel("g(r)", labelpad=10)
+
+        plt.tight_layout()
+        plt.show()
+
+        return plt
 
 
 class Monitor:

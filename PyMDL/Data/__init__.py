@@ -18,13 +18,12 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from PyMDL.Data.Elements import _Element, _element_data
-from PyMDL.Data.Mixing import Mixing
 
-__author__ = 'Doguhan Sariturk'
+__author__ = "Doguhan Sariturk"
 __version__ = "0.1.0"
-__email__ = 'dogu.sariturk@gmail.com'
-__status__ = 'Development'
-__maintainer__ = 'Doguhan Sariturk'
+__email__ = "dogu.sariturk@gmail.com"
+__status__ = "Development"
+__maintainer__ = "Doguhan Sariturk"
 __license__ = "GPL"
 
 
@@ -44,8 +43,8 @@ def Element(name=None):
     if name is None:
         print("Usage: Element('ELEMENT_NAME')")
     elif name in _element_data:
-        return _Element(name, _element_data[name]['melting_point'], _element_data[name]['atomic_number'],
-                        _element_data[name]['atomic_volume'], _element_data[name]['atomic_weight'],
-                        _element_data[name]['atomic_radius'], _element_data[name]['nvalence'])
+        return _Element(name, _element_data[name]["melting_point"], _element_data[name]["atomic_number"],
+                        _element_data[name]["atomic_volume"], _element_data[name]["atomic_weight"],
+                        _element_data[name]["atomic_radius"], _element_data[name]["nvalence"])
     else:
-        print('Enter a valid element name.')
+        print("Enter a valid element name.")

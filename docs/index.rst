@@ -5,6 +5,7 @@
    :caption: Contents
 
    self
+   source/Installation
    source/Usage
 
 .. toctree::

@@ -17,11 +17,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-__author__ = 'Doguhan Sariturk'
+__author__ = "Doguhan Sariturk"
 __version__ = "0.1.0"
-__email__ = 'dogu.sariturk@gmail.com'
-__status__ = 'Development'
-__maintainer__ = 'Doguhan Sariturk'
+__email__ = "dogu.sariturk@gmail.com"
+__status__ = "Development"
+__maintainer__ = "Doguhan Sariturk"
 __license__ = "GPL"
 
 from itertools import combinations_with_replacement
@@ -34,7 +34,7 @@ from PyMDL.Parsers.LAMMPS import Dump
 class RDF:
     """A class for calculating partial radial distribution functions from LAMMPS Dump files.
 
-    Notes
+    Note
     -----
     TODO: RDF algorithm from mpmorph, include LICENSE
 
@@ -96,7 +96,7 @@ class RDF:
     def _distance_matrix(self, coords):
         """"Returns the distance matrix between all sites in the structure.
 
-        Notes
+        Note
         -----
         TODO: Distance Matrix from pymatgen, include LICENSE
         Parameters
